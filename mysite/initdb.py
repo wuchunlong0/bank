@@ -5,7 +5,7 @@ import django
 import random
 import datetime
 
-user_num = 1 #初始化用户数
+user_num = 3 #初始化用户数
 
 # 登录用户 初始化
 roots = []
@@ -30,10 +30,10 @@ if __name__ == "__main__":
     isname = User.objects.filter(username = 'admin')
     if isname:
         user = User.objects.get(username='admin')
-        user.set_password('admin')
+        user.set_password('1234qazx')
         user.save()
     else:
-        User.objects.create_superuser('admin', 'admin@test.com','admin')
+        User.objects.create_superuser('admin', 'admin@test.com','1234qazx')
     
     #print('===='+os.getcwd()) #当前目录
     if os.path.exists("mysite/web/files/AnalysisReport.docx"):
@@ -41,14 +41,12 @@ if __name__ == "__main__":
         print("del mysite/web/files/AnalysisReport.docx") 
     
     # 菜单 初始化 *个菜单
-    menulist = ['HOME','问卷管理','客户管理','信息管理','角色管理','用户管理','菜单管理','权限管理','单元测试']
-    for i in menulist:
-        m = Menu()
-        m.title = i
-        m.save()
+    menus = ['HOME','问卷管理','客户管理','信息管理','角色管理','用户管理','菜单管理','权限管理','单元测试']
+    items = [Menu(title=i) for i in menus]
+    Menu.objects.bulk_create(items, batch_size=20)     
     
-    # 权限 初始化 *个权限  
-    perlistdict = [['HOME',['test','/bank/test/test/','test_test']],\
+    # 权限 初始化   
+    Permissions = [['HOME',['test','/bank/test/test/','test_test']],\
                    ['HOME',['首页','/bank/index/','bank_index']],\
                    ['',['帮助文档','/bank/help/(.+)','help']],\
                    ['',['联系我们','/bank/contactus/','contactus']],\
@@ -119,22 +117,16 @@ if __name__ == "__main__":
                     
                     
                    ]
+
+    items = [Permission(menu=Menu.objects.get(title=i[0]) if i[0] else None, title=i[1][0], url=i[1][1], name=i[1][2]) for i in Permissions]
+    Permission.objects.bulk_create(items, batch_size=20)     
     
-    for d in perlistdict:
-        p = Permission()
-        p.title = d[1][0]
-        p.url = d[1][1]
-        p.name = d[1][2]
-        if d[0]:
-            p.menu =  Menu.objects.get(title = d[0])
-        p.save()
                 
     # 角色 初始化 -- 3个角色(CEO、主管、普通用户) contactus
     
     # CEO -- 具有所有权限 
-    r = Role()
-    r.title = 'CEO'
-    r.save()    
+    Role(title = 'CEO').save() 
+   
     r = Role.objects.get(title = 'CEO') 
     r.permissions.add(Permission.objects.get(title = 'test'),\
                       Permission.objects.get(title = '首页'),\
@@ -206,9 +198,8 @@ if __name__ == "__main__":
     r.save()
 
     # 主管 -- 没有删除权限
-    r = Role()
-    r.title = '主管'
-    r.save()    
+    Role(title = '主管').save() 
+
     r = Role.objects.get(title = '主管')
     r.permissions.add(Permission.objects.get(title = '首页'),\
                       Permission.objects.get(title = '帮助文档'),\
@@ -226,9 +217,9 @@ if __name__ == "__main__":
     r.save()
 
     # 普通用户 -- 只有首页、客户列表、账单列表3个权限
-    r = Role()
-    r.title = '普通用户'
-    r.save()    
+    Role(title = '普通用户').save()
+
+        
     r = Role.objects.get(title = '普通用户')
     r.permissions.add(Permission.objects.get(title = '首页'),\
                       Permission.objects.get(title = '帮助文档'),\
@@ -237,13 +228,10 @@ if __name__ == "__main__":
                       )
     r.save()
     
-    #添加用户 
-    for i in roots:
-        u = UserInfo()
-        u.name = i[0]
-        u.password = i[1]
-        u.email = i[2]
-        u.save()    
+    #添加用户    
+    items = [UserInfo(name=i[0], password=i[1], email = i[2]) for i in roots]
+    UserInfo.objects.bulk_create(items, batch_size=20)     
+                   
     #添加用户角色 
     for i in roots:
         u = UserInfo.objects.get(name = i[0])
@@ -255,28 +243,16 @@ if __name__ == "__main__":
                  ['李伟中',12,'user2@1.com','中国烟草公司'],\
                  ['赵云',22,'user3@1.com','中国人民银行'],\
                  ['张国力',36,'user4@1.com','中国成品油公司']]
-    for i in customers:
-        c = Customer()
-        c.name = i[0]
-        c.age = i[1]
-        c.email = i[2]
-        c.company = i[3]
-        c.save()
+    
+    items = [Customer(name=i[0], age=i[1], email = i[2], company = i[3]) for i in customers]
+    Customer.objects.bulk_create(items, batch_size=20)     
         
     # 账单 初始化 -- 4个账单
-    for i in customers:
-        p = Payment()
-        p.customer = Customer.objects.get(name = i[0]) 
-        p.money = random.randint(1, 5) #1-5随机整数
-        p.save()  
+    items = [Payment(customer=Customer.objects.get(name = i[0]), money = random.randint(1, 5)) for i in customers]
+    Payment.objects.bulk_create(items, batch_size=20)     
 
-    s = Setvalue()
-    s.a_per = 20
-    s.b_per = 20
-    s.c_per = 20
-    s.d_per = 20
-    s.e_per = 20
-    s.save()
+
+    Setvalue(a_per = 20, b_per = 20, c_per = 20, d_per = 20, e_per = 20).save()
 
 '''    
     # 初始化问卷 3人 

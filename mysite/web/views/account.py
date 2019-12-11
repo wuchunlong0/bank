@@ -5,7 +5,7 @@ from rbac import models
 from django.shortcuts import HttpResponse, render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login as auth_login
-
+    
 def login(request):
     if request.method == 'GET':
         error = request.GET.get('error')

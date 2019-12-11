@@ -14,33 +14,31 @@ class RbacMiddleware(MiddlewareMixin):
 
         """
         1. 获取当前用户请求的URL
-        2. 获取当前用户在session中保存的权限列表 ['/customer/list/','/customer/list/(?P<cid>\\d+)/']
+        2. 获取当前用户在session中保存的权限列表 
         3. 权限信息匹配
         """
-        current_url = request.path_info        
+        current_url = request.path_info  
+        #print('current_url======', current_url)
+        #print('settings.VALID_URL_LIST======', settings.VALID_URL_LIST)      
         for valid_url in settings.VALID_URL_LIST:
+            #if valid_url == current_url:
             if re.match(valid_url, current_url):
                 # 白名单中的URL无需权限验证即可访问
                 return None
 
         permission_dict = request.session.get(settings.PERMISSION_SESSION_KEY)
         if not permission_dict:
-            return redirect('/login/?error=无用户权限,请登录!')
+            return redirect('/login/?error=未获取到用户权限信息')
             return HttpResponse('未获取到用户权限信息,请登录!')
 
         flag = False
-
+        
         url_record = [
-            {'title': '首页', 'url': '#'}
+            {'title': '首页', 'url': '/'}
         ]
     
-        #reg= '^/rbac/permission/list/$'
-        #current_url= '/rbac/permission/list/'
-        #print(re.match(reg, current_url)) #<_sre.SRE_Match object; span=(0, 22), match='/rbac/permission/list/'>
         for item in permission_dict.values():            
             reg = "^%s$" % item['url']
-            #print('reg==', reg)
-            #print('current_url==',current_url)
             if re.match(reg, current_url): 
                 flag = True
                 request.current_selected_permission = item['pid'] or item['id']
@@ -57,3 +55,4 @@ class RbacMiddleware(MiddlewareMixin):
         if not flag:
             return redirect('/login/?error=无权访问,请登录!')
             #return HttpResponse('无权访问')
+         

@@ -119,12 +119,16 @@
 <div class="pg-body">
     <div class="left-menu">
         <div class="menu-body">
+        
             {% multi_menu request %}
+            
         </div>
     </div>
     <div class="right-body">
         <div>
+            
             {% breadcrumb request %}
+            
         </div>
         {% block content %} {% endblock %}
     </div>

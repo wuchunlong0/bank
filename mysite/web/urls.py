@@ -16,6 +16,6 @@ urlpatterns = [
     url(r'^payment/edit/(?P<pid>\d+)/$', payment.payment_edit, name='payment_edit'),
     url(r'^payment/del/(?P<pid>\d+)/$', payment.payment_del, name='payment_del'),
 
-    url(r'^login/$', account.login),
+    url(r'^login/$', account.login),   
 
 ]

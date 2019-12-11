@@ -1,0 +1,7 @@
+eclipse.preferences.version=1
+encoding//mysite/bank/models.py=utf-8
+encoding//mysite/bank/views.py=utf-8
+encoding//mysite/rbac/middlewares/rbac.py=utf-8
+encoding//mysite/rbac/service/init_permission.py=utf-8
+encoding//mysite/rbac/urls.py=utf-8
+encoding//mysite/web/views/account.py=utf-8
