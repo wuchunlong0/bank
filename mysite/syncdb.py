@@ -15,7 +15,7 @@ def syncdb():
                ('root2_100','123','c@1.com','普通用户'), ('赵力全_100','123','d@1.com','普通用户')]
     items = [UserInfo(name=i[0], password =i[1], email=i[2]) for i in items]
     UserInfo.objects.bulk_create(items, batch_size=20) 
-    [u for u in us]
+    #[u for u in us]
     os.rename("db_db.sqlite3", "db.sqlite3")
      
 if __name__ == "__main__":
