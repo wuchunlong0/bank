@@ -27,13 +27,8 @@ if __name__ == "__main__":
     from web.models import Customer, Payment    
     from bank.models import  Setvalue
     
-    isname = User.objects.filter(username = 'admin')
-    if isname:
-        user = User.objects.get(username='admin')
-        user.set_password('1234qazx')
-        user.save()
-    else:
-        User.objects.create_superuser('admin', 'admin@test.com','1234qazx')
+    if not User.objects.filter(username = 'admin'):
+        User.objects.create_superuser('admin', 'admin@test.com','admin')
     
     #print('===='+os.getcwd()) #当前目录
     if os.path.exists("mysite/web/files/AnalysisReport.docx"):
