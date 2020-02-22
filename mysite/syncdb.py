@@ -5,10 +5,7 @@ import shutil
 
 def syncdb():
     
-    
-    shutil.copyfile("db.sqlite3", "db_db.sqlite3")  
-
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings_db")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
     django.setup()
     
     from rbac.models import UserInfo
@@ -18,11 +15,8 @@ def syncdb():
     items = [UserInfo(name=i[0], password =i[1], email=i[2]) for i in items]
     UserInfo.objects.bulk_create(items, batch_size=20) 
 
-    
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
-    django.setup()
 
-     
+    
 if __name__ == "__main__":
     syncdb()
     print('Done!')
