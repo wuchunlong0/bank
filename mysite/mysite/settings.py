@@ -89,7 +89,6 @@ DATABASES = {
     }
 }
 
-print('db.sqlite3  ===========')
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -155,5 +154,7 @@ VALID_URL_LIST = [
 
 ]
 AUTO_DISCOVER_EXCLUDE = [
-    '/admin/.*'
+    '/admin/.*',
+    '/sync_in_progress/.*',
+    '/allow_sync/.*'
 ]

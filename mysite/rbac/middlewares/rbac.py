@@ -28,7 +28,7 @@ class RbacMiddleware(MiddlewareMixin):
 
         permission_dict = request.session.get(settings.PERMISSION_SESSION_KEY)
         if not permission_dict:
-            return redirect('/login/?error=未获取到用户权限信息')
+            return redirect('/login/?err=%s 无权限' %current_url)
             return HttpResponse('未获取到用户权限信息,请登录!')
 
         flag = False
