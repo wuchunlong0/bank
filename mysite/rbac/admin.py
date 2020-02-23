@@ -32,21 +32,14 @@ class UserInfoAdmin(admin.ModelAdmin):
     def set_immortal(self, request):
         """后台在这里加代码"""
         #self.message_user(request, "All heroes are now mortal")
-        print('===='+os.getcwd()) #当前目录
-        meg = "update ok"
-        try:
-            #cmdStr = (r'python syncdb.py')   
-            #os.system(cmdStr)
-            from rbac.models import UserInfo    
-            #给数据库写入数据 
-            items = [('root_100','123','a@1.com','CEO'), ('root1_100','123','b@1.com','主管'), 
-               ('root2_100','123','c@1.com','普通用户'), ('赵力全_100','123','d@1.com','普通用户')]
-            items = [UserInfo(name=i[0], password =i[1], email=i[2]) for i in items]
-            UserInfo.objects.bulk_create(items, batch_size=20) 
-            
-        except Exception as ex:
-            meg = 'err: %s' %ex
-            print('err: %s' %ex) 
+        #print('===='+os.getcwd()) #当前目录
+        
+        # 用命令不能更新数据(本机运行正常，部署后不能更新数据)，原因不清楚？
+        # cmdStr = (r'python syncdb.py')   
+        # os.system(cmdStr)
+        
+        from rbac.views.user import syncdb    
+        meg = syncdb()
         self.message_user(request, meg) 
         return HttpResponseRedirect("../") 
            

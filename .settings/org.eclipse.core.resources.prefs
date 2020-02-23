@@ -15,4 +15,5 @@ encoding//mysite/rbac/service/init_permission.py=utf-8
 encoding//mysite/rbac/urls.py=utf-8
 encoding//mysite/rbac/views/permission.py=utf-8
 encoding//mysite/rbac/views/role.py=utf-8
+encoding//mysite/rbac/views/user.py=utf-8
 encoding//mysite/web/views/account.py=utf-8
