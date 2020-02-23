@@ -31,10 +31,16 @@ class UserInfoAdmin(admin.ModelAdmin):
         return my_urls + urls
     def set_immortal(self, request):
         """后台在这里加代码"""
+        #self.message_user(request, "All heroes are now mortal")
         #print('===='+os.getcwd()) #当前目录
-
-        cmdStr = (r'python syncdb.py')   
-        os.system(cmdStr) 
+        meg = "update ok"
+        try:
+            cmdStr = (r'python syncdb.py')   
+            os.system(cmdStr)            
+        except Exception as ex:
+            meg = 'err: %s' %ex
+            print('err: %s' %ex) 
+        self.message_user(request, meg) 
         return HttpResponseRedirect("../") 
            
 @admin.register(Role)
