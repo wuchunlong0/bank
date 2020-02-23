@@ -59,18 +59,17 @@ class UserInfoAdmin(admin.ModelAdmin):
         """ 同步数据库(正在同步中) """
         self.change_list_template = "entities/sync-in-progress.html"  
                
-        #from rbac.views.user import syncdb 
-        #from syncdb import syncdb           
+        from syncdb import syncdb           
         if request.method == 'POST':
             with open(STATEFILE,'w+') as fp:  
                 fp.write('0') 
                                             
-            #meg = syncdb()  # 更新数据库数据 ok
+            meg = syncdb()  # 更新数据库数据 ok
             
-            # 用命令不能更新数据(本机运行正常，部署后不能更新数据)，原因不清楚？
-            cmdStr = (r'python syncdb.py')   
-            meg = os.system(cmdStr) # 返回值错误代码：https://blog.csdn.net/CrazyUncle/article/details/84565966
-            meg = '正常' if meg == 256 else '异常代码：%s' %meg
+            # 用命令不能更新数据(本机运行正常，部署后不能更新数据)，原因？错误代码：0 不允许操作
+            #cmdStr = (r'python syncdb.py')   
+            #meg = os.system(cmdStr) # 返回值错误代码：https://blog.csdn.net/CrazyUncle/article/details/84565966
+            #meg = '正常' if meg == 256 else '异常代码：%s' %meg
                 
                               
             if os.path.isfile(STATEFILE): #判断文件
@@ -89,30 +88,7 @@ class UserInfoAdmin(admin.ModelAdmin):
             self.change_list_template = "entities/allow-sync.html" 
         return HttpResponseRedirect("../")
 
-    
-        
-    ''' admin add button
-    change_list_template = "entities/heroes_changelist.html"       
-    def get_urls(self):
-        urls = super().get_urls()
-        my_urls = [
-            url('immortal/', self.set_immortal),
-        ]
-        return my_urls + urls
-    def set_immortal(self, request):
-        """后台在这里加代码"""
-        #self.message_user(request, "All heroes are now mortal")
-        #print('===='+os.getcwd()) #当前目录
-        
-        # 用命令不能更新数据(本机运行正常，部署后不能更新数据)，原因不清楚？
-        # cmdStr = (r'python syncdb.py')   
-        # os.system(cmdStr)
-        
-        from rbac.views.user import syncdb    
-        meg = syncdb()
-        self.message_user(request, meg) 
-        return HttpResponseRedirect("../") 
-    '''
+
 @admin.register(Role)
 class RoleAdmin(admin.ModelAdmin):   
     list_display = ('id', 'title', 'permissions_list')
