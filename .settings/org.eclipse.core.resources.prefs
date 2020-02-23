@@ -5,6 +5,7 @@ encoding//mysite/bank/urls.py=utf-8
 encoding//mysite/bank/views.py=utf-8
 encoding//mysite/blog/urls.py=utf-8
 encoding//mysite/blog/views.py=utf-8
+encoding//mysite/myAPI/apps.py=utf-8
 encoding//mysite/rbac/forms/base.py=utf-8
 encoding//mysite/rbac/forms/menu.py=utf-8
 encoding//mysite/rbac/forms/permission.py=utf-8
