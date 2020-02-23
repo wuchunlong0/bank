@@ -42,7 +42,7 @@ class UserInfoAdmin(admin.ModelAdmin):
         3、更新数据库数据的逻辑：
         （1）创建状态文件
         （2）更新数据库数据
-        （3）更新数据库数据完成，删除状态文件
+        （3）删除状态文件
           
     """
     
@@ -59,11 +59,20 @@ class UserInfoAdmin(admin.ModelAdmin):
         """ 同步数据库(正在同步中) """
         self.change_list_template = "entities/sync-in-progress.html"  
                
-        from rbac.views.user import syncdb            
+        #from rbac.views.user import syncdb 
+        #from syncdb import syncdb           
         if request.method == 'POST':
             with open(STATEFILE,'w+') as fp:  
-                fp.write('0')                             
-            meg = syncdb()  # 更新数据库数据                  
+                fp.write('0') 
+                                            
+            #meg = syncdb()  # 更新数据库数据 ok
+            
+            # 用命令不能更新数据(本机运行正常，部署后不能更新数据)，原因不清楚？
+            cmdStr = (r'python syncdb.py')   
+            meg = os.system(cmdStr) # 返回值错误代码：https://blog.csdn.net/CrazyUncle/article/details/84565966
+            meg = '正常' if meg == 256 else '异常代码：%s' %meg
+                
+                              
             if os.path.isfile(STATEFILE): #判断文件
                 os.remove(STATEFILE)                                         
             self.message_user(request, '%s 同步完成.' %meg) 
