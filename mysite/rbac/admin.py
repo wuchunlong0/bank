@@ -32,6 +32,7 @@ class UserInfoAdmin(admin.ModelAdmin):
     def set_immortal(self, request):
         """后台在这里加代码"""
         #print('===='+os.getcwd()) #当前目录
+
         cmdStr = (r'python syncdb.py')   
         os.system(cmdStr) 
         return HttpResponseRedirect("../") 
